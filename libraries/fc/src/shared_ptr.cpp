@@ -28,3 +28,5 @@ namespace fc {
     return _ref_count;
   }
 }
+
+// namespace fc
