@@ -43,6 +43,7 @@ namespace fc {
    extern std::unordered_map<std::string,logger>& get_logger_map();
 }
 
+// log from producer_plugin
 const fc::string logger_name("producer_plugin");
 fc::logger _log;
 
