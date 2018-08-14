@@ -94,7 +94,9 @@ void net_api_plugin::plugin_initialize(const variables_map& options) {
               "*                                   *\n"
               "*   this may be abused if exposed   *\n"
               "*                                   *\n"
-              "*************************************\n");
+              "*************************************\n"
+              "\n"
+             );
       }
    }
 }
