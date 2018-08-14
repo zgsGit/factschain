@@ -133,7 +133,7 @@ int main(int argc, char** argv)
       elog("${e}", ("e",e.what()));
       return OTHER_FAIL;
    } catch( ... ) {
-      elog("unknown exception");
+      elog("unknown exception!");
       return OTHER_FAIL;
    }
 
