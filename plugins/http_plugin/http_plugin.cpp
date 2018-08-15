@@ -160,7 +160,7 @@ namespace eosio {
                std::cerr << "Exception attempting to handle exception: " << err << std::endl;
             }
          }
-
+/*here will process the request .and return the media data and type*/
          template<class T>
          void handle_http_request(typename websocketpp::server<detail::asio_with_stub_log<T>>::connection_ptr con) {
             try {
@@ -251,7 +251,7 @@ namespace eosio {
              "Specify if Access-Control-Allow-Credentials: true should be returned on each request.")
             ;
    }
-
+/*this one part of plugin protocol . and initialize http protocol context.*/
    void http_plugin::plugin_initialize(const variables_map& options) {
       tcp::resolver resolver(app().get_io_service());
       if(options.count("http-server-address") && options.at("http-server-address").as<string>().length()) {
