@@ -682,6 +682,7 @@ producer_plugin_impl::start_block_result producer_plugin_impl::start_block() {
          persisted_by_expiry.erase(persisted_by_expiry.begin());
       }
 
+      
       for (auto itr = unapplied_trxs.begin(); itr != unapplied_trxs.end(); ++itr) {
          const auto& trx = *itr;
          if(persisted_by_id.find(trx->id) != persisted_by_id.end()) {
