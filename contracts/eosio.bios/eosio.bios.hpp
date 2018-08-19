@@ -2,6 +2,8 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/privileged.hpp>
 
+
+
 namespace eosio {
 
    class bios : public contract {
