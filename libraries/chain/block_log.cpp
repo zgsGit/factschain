@@ -187,7 +187,7 @@ namespace eosio { namespace chain {
          my->index_stream.write((char*)&pos, sizeof(pos));
          my->head = b;
          my->head_id = b->id();
-
+         /*this flush maybe blocked ,so if this function is used in any thread ,you shoud be careful. */
          flush();
 
          return pos;
@@ -257,6 +257,8 @@ namespace eosio { namespace chain {
          uint64_t pos = get_block_pos(block_num);
          if (pos != npos) {
             b = read_block(pos).first;
+            
+            /*there is const string in here , any hacker will watch here ,and got some infomation of program flow.*/
             EOS_ASSERT(b->block_num() == block_num, reversible_blocks_exception,
                       "Wrong block was read from block log.", ("returned", b->block_num())("expected", block_num));
          }

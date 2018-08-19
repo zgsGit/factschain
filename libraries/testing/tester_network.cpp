@@ -18,6 +18,8 @@ namespace eosio { namespace testing {
 /// TODO restore this
       
       /*
+      this functions is no use. so do not call here.
+      
       blockchains[&new_blockchain] = new_blockchain.control->applied_block.connect(
               [this, &new_blockchain](const chain::block_trace& bt) {
                  propagate_block(bt.block, new_blockchain);
@@ -35,9 +37,8 @@ namespace eosio { namespace testing {
 
    void tester_network::propagate_block(const signed_block &block, const base_tester &skip_blockchain) {
     //  for (const auto &pair : blockchains) {
-    //     if (pair.first == &skip_blockchain) continue;
-    //     boost::signals2::shared_connection_block blocker(pair.second);
-    //     pair.first->control->push_block(block, eosio::chain::validation_steps::created_block);
+      //c++11 code is already exchange boost's position.
+    
     //  }
    }
 
