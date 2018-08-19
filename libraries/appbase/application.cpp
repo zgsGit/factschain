@@ -7,7 +7,9 @@
 
 #include <iostream>
 #include <fstream>
-
+namespace support_application{
+   
+};
 namespace appbase {
 
 namespace bpo = boost::program_options;
