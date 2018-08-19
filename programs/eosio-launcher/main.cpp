@@ -35,7 +35,7 @@
 #include <eosio/chain/genesis_state.hpp>
 
 #include "config.hpp"
-
+// 2018-08-17
 using namespace std;
 namespace bfs = boost::filesystem;
 namespace bp = boost::process;
