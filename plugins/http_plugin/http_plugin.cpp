@@ -206,8 +206,6 @@ namespace eosio {
                });
             } catch ( const fc::exception& e ){
                elog( "http: ${e}", ("e",e.to_detail_string()));
-            } catch ( const std::exception& e ){
-               elog( "http: ${e}", ("e",e.what()));
             } catch (...) {
                elog("error thrown from http io service");
             }
