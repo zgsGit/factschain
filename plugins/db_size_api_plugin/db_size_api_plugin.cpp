@@ -27,7 +27,6 @@ using namespace eosio;
 #define INVOKE_R_V(api_handle, call_name) \
      auto result = api_handle->call_name();
 
-
 void db_size_api_plugin::plugin_startup() {
    app().get_plugin<http_plugin>().add_api({
        CALL(db_size, this, get,
