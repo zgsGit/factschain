@@ -13,9 +13,7 @@
 #include <eosio/chain/wasm_interface.hpp>
 #include <eosio/chain/resource_limits.hpp>
 #include <eosio/chain/reversible_block_object.hpp>
-
 #include <eosio/chain/eosio_contract.hpp>
-
 #include <eosio/utilities/key_conversion.hpp>
 #include <eosio/utilities/common.hpp>
 #include <eosio/chain/wast_to_wasm.hpp>
