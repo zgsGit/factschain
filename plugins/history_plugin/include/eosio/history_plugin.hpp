@@ -7,7 +7,9 @@
 
 #include <eosio/chain_plugin/chain_plugin.hpp>
 
+
 namespace fc { class variant; }
+
 
 namespace eosio {
    using chain::transaction_id_type;
