@@ -18,7 +18,6 @@ namespace eosio {
 
    static appbase::abstract_plugin& _history_plugin = app().register_plugin<history_plugin>();
 
-
    struct account_history_object : public chainbase::object<account_history_object_type, account_history_object>  {
       OBJECT_CTOR( account_history_object );
 

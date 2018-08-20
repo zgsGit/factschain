@@ -17,7 +17,7 @@ namespace eosio { namespace chain { namespace plugin_interface {
    using namespace appbase;
 
    struct chain_plugin_interface;
-   
+
    namespace channels {
       using accepted_block_header  = channel_decl<struct accepted_block_header_tag, block_state_ptr>;
       using accepted_block         = channel_decl<struct accepted_block_tag,        block_state_ptr>;
