@@ -145,7 +145,7 @@
 				export PATH=${HOME}/opt/mongodb/bin:$PATH
 			;;
 			"CentOS Linux")
-				FILE="${PWD}/scripts/eosio_build_centos.sh"
+				FILE="${PWD}/scripts/factsio_build_centos.sh"
 				CXX_COMPILER=g++
 				C_COMPILER=gcc
 				MONGOD_CONF=${HOME}/opt/mongodb/mongod.conf
