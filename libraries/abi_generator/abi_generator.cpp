@@ -352,8 +352,8 @@ void abi_generator::guess_key_names(table_def& table, const struct_def s) {
 
  if( table.index_type == "i64") {
 
-    table.key_names.clear();
     table.key_types.clear();
+    table.key_names.clear();
 
     unsigned int key_size = 0;
     bool valid_key = false;

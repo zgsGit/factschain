@@ -105,7 +105,7 @@ class privileged_api : public context_aware_api {
       }
 
       /**
-       * This should return true if a feature is active and irreversible, false if not.
+       * This should return true if a feature is active and irreversible, and returnfalse if not.
        *
        * Irreversiblity by fork-database is not consensus safe, therefore, this defines
        * irreversiblity only by block headers not by BFT short-cut.
@@ -278,7 +278,7 @@ class softfloat_api : public context_aware_api {
          float32_t ret = f32_sqrt( to_softfloat32(a) );
          return from_softfloat32(ret);
       }
-      // ceil, floor, trunc and nearest are lifted from libc
+      
       float _eosio_f32_ceil( float af ) {
          float32_t a = to_softfloat32(af);
          int e = (int)(a.v >> 23 & 0xFF) - 0X7F;
@@ -442,7 +442,7 @@ class softfloat_api : public context_aware_api {
          float64_t ret = f64_sqrt( to_softfloat64(a) );
          return from_softfloat64(ret);
       }
-      // ceil, floor, trunc and nearest are lifted from libc
+      
       double _eosio_f64_ceil( double af ) {
          float64_t a = to_softfloat64( af );
          float64_t ret;

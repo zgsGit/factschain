@@ -9,6 +9,9 @@
 
 namespace eosio { namespace utilities {
 
+/**
+ *  get the temp directory path by env setting of "EOS_TEMPDIR"
+ */   
 fc::path temp_directory_path()
 {
    const char* eos_tempdir = getenv("EOS_TEMPDIR");
