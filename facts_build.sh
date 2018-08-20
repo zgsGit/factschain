@@ -136,7 +136,7 @@
 	
 		case "$OS_NAME" in
 			"Amazon Linux AMI")
-				FILE="${PWD}/scripts/eosio_build_amazon.sh"
+				FILE="${PWD}/scripts/factsio_build_amazon.sh"
 				CXX_COMPILER=g++
 				C_COMPILER=gcc
 				MONGOD_CONF=${HOME}/opt/mongodb/mongod.conf
