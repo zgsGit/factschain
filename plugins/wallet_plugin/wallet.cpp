@@ -205,7 +205,7 @@ public:
          //
          // Parentheses on the following declaration fails to compile,
          // due to the Most Vexing Parse.  Thanks, C++
-         //
+         // due to the Most V
          // http://en.wikipedia.org/wiki/Most_vexing_parse
          //
          ofstream outfile{ wallet_filename };
@@ -301,7 +301,6 @@ bool wallet_api::is_new() const
 
 void wallet_api::encrypt_keys()
 {
-  //modify_test:2018-08-21 13:13:13
    my->encrypt_keys();
 }
 
