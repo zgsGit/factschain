@@ -192,7 +192,7 @@
 	fi
 
 	if [ "$ARCH" == "Darwin" ]; then
-		FILE="${PWD}/scripts/eosio_build_darwin.sh"
+		FILE="${PWD}/scripts/factsio_build_darwin.sh"
 		CXX_COMPILER=clang++
 		C_COMPILER=clang
 		MONGOD_CONF=/usr/local/etc/mongod.conf
