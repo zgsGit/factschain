@@ -149,6 +149,15 @@ namespace fc  {
   {
     return boost::lexical_cast<std::string>(d);
   }
+   
+  string trim_and_normalize_spaces( const string& s )
+  {
+     string result = boost::algorithm::trim_copy( s );
+     while( result.find( "  " ) != result.npos )
+       boost::algorithm::replace_all( result, "  ", " " );
+     return result;
+  }
+   
   std::string trim( const std::string& s )
   {
       return boost::algorithm::trim_copy(s);
@@ -158,18 +167,12 @@ namespace fc  {
       return cpy;
       */
   }
+  
   std::string to_lower( const std::string& s )
   {
      auto tmp = s;
      boost::algorithm::to_lower(tmp);
      return tmp;
-  }
-  string trim_and_normalize_spaces( const string& s )
-  {
-     string result = boost::algorithm::trim_copy( s );
-     while( result.find( "  " ) != result.npos )
-       boost::algorithm::replace_all( result, "  ", " " );
-     return result;
   }
 
 } // namespace fc

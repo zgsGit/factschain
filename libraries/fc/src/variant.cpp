@@ -11,6 +11,7 @@
 
 namespace fc
 {
+   
 /**
  *  The TypeID is stored in the 'last byte' of the variant.
  */
@@ -119,17 +120,6 @@ variant::variant( wchar_t* str )
    set_variant_type( this, string_type );
 }
 
-// TODO: do a proper conversion to utf8
-variant::variant( const wchar_t* str )
-{
-   size_t len = wcslen(str);
-   boost::scoped_array<char> buffer(new char[len]);
-   for (unsigned i = 0; i < len; ++i)
-     buffer[i] = (char)str[i];
-   *reinterpret_cast<string**>(this)  = new string(buffer.get(), len);
-   set_variant_type( this, string_type );
-}
-
 variant::variant( fc::string val )
 {
    *reinterpret_cast<string**>(this)  = new string( fc::move(val) );
@@ -156,6 +146,16 @@ variant::variant( variants arr )
 {
    *reinterpret_cast<variants**>(this)  = new variants(fc::move(arr));
    set_variant_type(this,  array_type );
+}
+// TODO: do a proper conversion to utf8
+variant::variant( const wchar_t* str )
+{
+   size_t len = wcslen(str);
+   boost::scoped_array<char> buffer(new char[len]);
+   for (unsigned i = 0; i < len; ++i)
+     buffer[i] = (char)str[i];
+   *reinterpret_cast<string**>(this)  = new string(buffer.get(), len);
+   set_variant_type( this, string_type );
 }
 
 
