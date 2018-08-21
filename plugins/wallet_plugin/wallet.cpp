@@ -205,7 +205,7 @@ public:
          //
          // Parentheses on the following declaration fails to compile,
          // due to the Most Vexing Parse.  Thanks, C++
-         //
+         // due to the Most V
          // http://en.wikipedia.org/wiki/Most_vexing_parse
          //
          ofstream outfile{ wallet_filename };

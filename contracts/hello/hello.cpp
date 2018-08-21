@@ -5,7 +5,7 @@ class hello : public eosio::contract {
   public:
       using contract::contract;
 
-      /// @abi action 
+      /// @abi action update
       void hi( account_name user ) {
          print( "Hello, ", name{user} );
       }
