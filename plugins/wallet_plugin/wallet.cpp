@@ -301,6 +301,7 @@ bool wallet_api::is_new() const
 
 void wallet_api::encrypt_keys()
 {
+  //modify_test:2018-08-21 13:13:13
    my->encrypt_keys();
 }
 
