@@ -1,4 +1,5 @@
 /**
+ *  this is function is specially for database CRUD operation
  *  @file
  *  @copyright defined in eos/LICENSE.txt
  */
