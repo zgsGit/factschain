@@ -163,28 +163,7 @@ namespace eosio {
                   result.insert( a.actor );
             return result;
          }
-
-         void record_account_action( account_name n, const base_action_trace& act ) {
-            auto& chain = chain_plug->chain();
-            auto& db = chain.db();
-
-            const auto& idx = db.get_index<account_history_index, by_account_action_seq>();
-            auto itr = idx.lower_bound( boost::make_tuple( name(n.value+1), 0 ) );
-
-            uint64_t asn = 0;
-            if( itr != idx.begin() ) --itr;
-            if( itr->account == n ) 
-               asn = itr->account_sequence_num + 1;
-
-            //idump((n)(act.receipt.global_sequence)(asn));
-            const auto& a = db.create<account_history_object>( [&]( auto& aho ) {
-              aho.account = n;
-              aho.action_sequence_num = act.receipt.global_sequence;
-              aho.account_sequence_num = asn;
-            });
-            //idump((a.account)(a.action_sequence_num)(a.action_sequence_num));
-         }
-
+      
          void on_system_action( const action_trace& at ) {
             auto& chain = chain_plug->chain();
             auto& db = chain.db();
@@ -211,6 +190,29 @@ namespace eosio {
                remove<account_control_history_multi_index, by_controlled_authority>(db, del.account, del.permission);
             }
          }
+
+         void record_account_action( account_name n, const base_action_trace& act ) {
+            auto& chain = chain_plug->chain();
+            auto& db = chain.db();
+
+            const auto& idx = db.get_index<account_history_index, by_account_action_seq>();
+            auto itr = idx.lower_bound( boost::make_tuple( name(n.value+1), 0 ) );
+
+            uint64_t asn = 0;
+            if( itr != idx.begin() ) --itr;
+            if( itr->account == n ) 
+               asn = itr->account_sequence_num + 1;
+
+            //idump((n)(act.receipt.global_sequence)(asn));
+            const auto& a = db.create<account_history_object>( [&]( auto& aho ) {
+              aho.account = n;
+              aho.action_sequence_num = act.receipt.global_sequence;
+              aho.account_sequence_num = asn;
+            });
+            //idump((a.account)(a.action_sequence_num)(a.action_sequence_num));
+         }
+
+         
 
          void on_action_trace( const action_trace& at ) {
             if( filter( at ) ) {
@@ -440,6 +442,16 @@ namespace eosio {
 
          return result;
       }
+      
+      read_only::get_controlled_accounts_results read_only::get_controlled_accounts(const get_controlled_accounts_params& params) const {
+         std::set<account_name> accounts;
+         const auto& db = history->chain_plug->chain().db();
+         const auto& account_control_idx = db.get_index<account_control_history_multi_index, by_controlling>();
+         auto range = account_control_idx.equal_range( params.controlling_account );
+         for (auto obj = range.first; obj != range.second; ++obj)
+            accounts.insert(obj->controlled_account);
+         return {vector<account_name>(accounts.begin(), accounts.end())};
+      }
 
       read_only::get_key_accounts_results read_only::get_key_accounts(const get_key_accounts_params& params) const {
          std::set<account_name> accounts;
@@ -450,16 +462,7 @@ namespace eosio {
             accounts.insert(obj->name);
          return {vector<account_name>(accounts.begin(), accounts.end())};
       }
-
-      read_only::get_controlled_accounts_results read_only::get_controlled_accounts(const get_controlled_accounts_params& params) const {
-         std::set<account_name> accounts;
-         const auto& db = history->chain_plug->chain().db();
-         const auto& account_control_idx = db.get_index<account_control_history_multi_index, by_controlling>();
-         auto range = account_control_idx.equal_range( params.controlling_account );
-         for (auto obj = range.first; obj != range.second; ++obj)
-            accounts.insert(obj->controlled_account);
-         return {vector<account_name>(accounts.begin(), accounts.end())};
-      }
+      
 
    } /// history_apis
 

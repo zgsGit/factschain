@@ -45,7 +45,7 @@ namespace identity {
     *         - verify that a trusted certifier has confirmed owner
     *
     *  This database structure enables parallel opeartions on independent identities.
-    *
+    *  When an account certs a property we check to see if that
     *  When an account certs a property we check to see if that
     */
    class contract : public identity_base {

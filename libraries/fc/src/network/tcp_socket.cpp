@@ -102,14 +102,24 @@ namespace fc {
         }
     } FC_RETHROW_EXCEPTIONS( warn, "error closing tcp socket" );
   }
-
-  bool tcp_socket::eof()const {
-    return !my->_sock.is_open();
-  }
-
+   
   size_t tcp_socket::writesome(const char* buf, size_t len) 
   {
     return my->_io_hooks->writesome(my->_sock, buf, len);
+  }
+   
+  bool tcp_socket::eof()const {
+    return !my->_sock.is_open();
+  }
+  
+  fc::ip::endpoint tcp_socket::local_endpoint() const
+  {
+    try
+    {
+      auto boost_local_endpoint = my->_sock.local_endpoint();
+      return fc::ip::endpoint(boost_local_endpoint.address().to_v4().to_ulong(), boost_local_endpoint.port() );
+    } 
+    FC_RETHROW_EXCEPTIONS( warn, "error getting socket's local endpoint" );
   }
 
   size_t tcp_socket::writesome(const std::shared_ptr<const char>& buf, size_t len, size_t offset) 
@@ -126,16 +136,9 @@ namespace fc {
     } 
     FC_RETHROW_EXCEPTIONS( warn, "error getting socket's remote endpoint" );
   }
-
-
-  fc::ip::endpoint tcp_socket::local_endpoint() const
-  {
-    try
-    {
-      auto boost_local_endpoint = my->_sock.local_endpoint();
-      return fc::ip::endpoint(boost_local_endpoint.address().to_v4().to_ulong(), boost_local_endpoint.port() );
-    } 
-    FC_RETHROW_EXCEPTIONS( warn, "error getting socket's local endpoint" );
+ 
+  size_t tcp_socket::readsome( const std::shared_ptr<char>& buf, size_t len, size_t offset ) {
+    return my->_io_hooks->readsome(my->_sock, buf, len, offset);
   }
 
   size_t tcp_socket::readsome( char* buf, size_t len ) 
@@ -143,9 +146,6 @@ namespace fc {
     return my->_io_hooks->readsome(my->_sock, buf, len);
   }
 
-  size_t tcp_socket::readsome( const std::shared_ptr<char>& buf, size_t len, size_t offset ) {
-    return my->_io_hooks->readsome(my->_sock, buf, len, offset);
-  }
 
   void tcp_socket::connect_to( const fc::ip::endpoint& remote_endpoint ) {
     fc::asio::tcp::connect(my->_sock, fc::asio::tcp::endpoint( boost::asio::ip::address_v4(remote_endpoint.get_address()), remote_endpoint.port() ) ); 
