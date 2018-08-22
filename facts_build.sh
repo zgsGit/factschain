@@ -154,7 +154,7 @@
 				export PATH=${HOME}/opt/mongodb/bin:$PATH
 			;;
 			"elementary OS")
-				FILE="${PWD}/scripts/eosio_build_ubuntu.sh"
+				FILE="${PWD}/scripts/factsio_build_ubuntu.sh"
 				CXX_COMPILER=clang++-4.0
 				C_COMPILER=clang-4.0
 				MONGOD_CONF=${HOME}/opt/mongodb/mongod.conf
