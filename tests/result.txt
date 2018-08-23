@@ -1,1 +1,6 @@
+<<<<<<< HEAD
+read me
+add teset
+=======
 
+>>>>>>> 18a55d6f505eeeea3466a9b39c5347ee76923c98
