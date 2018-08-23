@@ -97,6 +97,11 @@ void wallet_api_plugin::plugin_startup() {
    });
 }
 
+
+
+  
+  
+  
 void wallet_api_plugin::plugin_initialize(const variables_map& options) {
    if (options.count("http-server-address")) {
       const auto& lipstr = options.at("http-server-address").as<string>();
@@ -113,7 +118,6 @@ void wallet_api_plugin::plugin_initialize(const variables_map& options) {
       }
    }
 }
-
 
 #undef INVOKE_R_R
 #undef INVOKE_R_R_R_R
