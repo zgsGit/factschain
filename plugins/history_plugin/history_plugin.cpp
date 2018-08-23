@@ -100,6 +100,21 @@ namespace eosio {
       }
    }
 
+   
+   struct filter_entry {
+      name receiver;
+      name action;
+      name actor;
+
+      std::tuple<name, name, name> key() const {
+         return std::make_tuple(receiver, action, actor);
+      }
+
+      friend bool operator<( const filter_entry& a, const filter_entry& b ) {
+         return a.key() < b.key();
+      }
+   };
+   
    static void add(chainbase::database& db, const vector<key_weight>& keys, const account_name& name, const permission_name& permission)
    {
       for (auto pub_key_weight : keys ) {
@@ -122,19 +137,6 @@ namespace eosio {
       }
    }
 
-   struct filter_entry {
-      name receiver;
-      name action;
-      name actor;
-
-      std::tuple<name, name, name> key() const {
-         return std::make_tuple(receiver, action, actor);
-      }
-
-      friend bool operator<( const filter_entry& a, const filter_entry& b ) {
-         return a.key() < b.key();
-      }
-   };
 
    class history_plugin_impl {
       public:
