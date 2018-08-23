@@ -288,15 +288,18 @@ faucet_testnet_plugin::faucet_testnet_plugin()
 
 faucet_testnet_plugin::~faucet_testnet_plugin() {}
 
-void faucet_testnet_plugin::set_program_options(options_description&, options_description& cfg) {
-   cfg.add_options()
-         ("faucet-create-interval-ms", bpo::value<uint32_t>()->default_value(faucet_testnet_plugin_impl::_default_create_interval_msec),
-          "Time to wait, in milliseconds, between creating next faucet created account.")
-         ("faucet-name", bpo::value<std::string>()->default_value(faucet_testnet_plugin_impl::_default_create_account_name),
-          "Name to use as creator for faucet created accounts.")
-         ("faucet-private-key", boost::program_options::value<std::string>()->default_value(fc::json::to_string(faucet_testnet_plugin_impl::_default_key_pair)),
-          "[public key, WIF private key] for signing for faucet creator account")
-         ;
+
+void faucet_testnet_plugin::plugin_shutdown() {
+   try {
+      my->_timer.cancel();
+   } catch(fc::exception& e) {
+      edump((e.to_detail_string()));
+   }
+}
+void faucet_testnet_plugin::plugin_startup() {
+   app().get_plugin<http_plugin>().add_api({
+      CALL(faucet, my, create_account, faucet_testnet_plugin_impl::create_faucet_account )
+   });
 }
 
 void faucet_testnet_plugin::plugin_initialize(const variables_map& options) {
@@ -309,19 +312,15 @@ void faucet_testnet_plugin::plugin_initialize(const variables_map& options) {
    fc::crypto::private_key private_key(faucet_key_pair.second);
    my->_create_account_private_key = std::move(private_key);
 }
-
-void faucet_testnet_plugin::plugin_startup() {
-   app().get_plugin<http_plugin>().add_api({
-      CALL(faucet, my, create_account, faucet_testnet_plugin_impl::create_faucet_account )
-   });
+void faucet_testnet_plugin::set_program_options(options_description&, options_description& cfg) {
+   cfg.add_options()
+         ("faucet-create-interval-ms", bpo::value<uint32_t>()->default_value(faucet_testnet_plugin_impl::_default_create_interval_msec),
+          "Time to wait, in milliseconds, between creating next faucet created account.")
+         ("faucet-name", bpo::value<std::string>()->default_value(faucet_testnet_plugin_impl::_default_create_account_name),
+          "Name to use as creator for faucet created accounts.")
+         ("faucet-private-key", boost::program_options::value<std::string>()->default_value(fc::json::to_string(faucet_testnet_plugin_impl::_default_key_pair)),
+          "[public key, WIF private key] for signing for faucet creator account")
+         ;
 }
-
-void faucet_testnet_plugin::plugin_shutdown() {
-   try {
-      my->_timer.cancel();
-   } catch(fc::exception& e) {
-      edump((e.to_detail_string()));
-   }
-}
-
+  
 }
