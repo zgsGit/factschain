@@ -329,19 +329,6 @@ namespace eosio {
       }
    }
 
-   void http_plugin::plugin_shutdown() {
-      if(my->server.is_listening())
-         my->server.stop_listening();
-      if(my->https_server.is_listening())
-         my->https_server.stop_listening();
-   }
-
-   void http_plugin::add_handler(const string& url, const url_handler& handler) {
-      ilog( "add api url: ${c}", ("c",url) );
-      app().get_io_service().post([=](){
-        my->url_handlers.insert(std::make_pair(url,handler));
-      });
-   }
 
    void http_plugin::handle_exception( const char *api_name, const char *call_name, const string& body, url_response_callback cb ) {
       try {
@@ -380,6 +367,20 @@ namespace eosio {
       } catch (...) {
          std::cerr << "Exception attempting to handle exception for " << api_name << "." << call_name << std::endl;
       }
+   }
+   
+   void http_plugin::add_handler(const string& url, const url_handler& handler) {
+      ilog( "add api url: ${c}", ("c",url) );
+      app().get_io_service().post([=](){
+        my->url_handlers.insert(std::make_pair(url,handler));
+      });
+   }
+   
+   void http_plugin::plugin_shutdown() {
+      if(my->server.is_listening())
+         my->server.stop_listening();
+      if(my->https_server.is_listening())
+         my->https_server.stop_listening();
    }
 
 }
