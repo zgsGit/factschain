@@ -206,6 +206,21 @@ get_transactions_results account_history_plugin_impl::get_transactions(const acc
    return ordered_transactions(block_transaction_ids, start_time, begin, end);
 }
 
+vector<account_name> account_history_plugin_impl::get_key_accounts(const public_key_type& public_key) const
+{
+   std::set<account_name> accounts;
+   const auto& db = chain_plug->chain().db();
+   db.with_read_lock( [&]() {
+      const auto& pub_key_idx = db.get_index<public_key_history_multi_index, by_pub_key>();
+      auto range = pub_key_idx.equal_range( public_key );
+      for (auto obj = range.first; obj != range.second; ++obj)
+      {
+         accounts.insert(obj->name);
+      }
+   } );
+   return vector<account_name>(accounts.begin(), accounts.end());
+}
+
 get_transactions_results account_history_plugin_impl::ordered_transactions(const block_transaction_id_map& block_transaction_ids, const fc::time_point& start_time, const uint32_t begin, const uint32_t end) const
 {
    get_transactions_results results;
@@ -273,21 +288,6 @@ get_transactions_results account_history_plugin_impl::ordered_transactions(const
 bool account_history_plugin_impl::time_exceeded(const fc::time_point& start_time) const
 {
    return (fc::time_point::now() - start_time).count() > transactions_time_limit;
-}
-
-vector<account_name> account_history_plugin_impl::get_key_accounts(const public_key_type& public_key) const
-{
-   std::set<account_name> accounts;
-   const auto& db = chain_plug->chain().db();
-   db.with_read_lock( [&]() {
-      const auto& pub_key_idx = db.get_index<public_key_history_multi_index, by_pub_key>();
-      auto range = pub_key_idx.equal_range( public_key );
-      for (auto obj = range.first; obj != range.second; ++obj)
-      {
-         accounts.insert(obj->name);
-      }
-   } );
-   return vector<account_name>(accounts.begin(), accounts.end());
 }
 
 vector<account_name> account_history_plugin_impl::get_controlled_accounts(const account_name& controlling_account) const
@@ -394,18 +394,6 @@ void account_history_plugin_impl::applied_block(const chain::block_trace& trace)
                process_one(trx_trace);
 }
 
-void account_history_plugin_impl::add(chainbase::database& db, const vector<key_weight>& keys, const account_name& name, const permission_name& permission)
-{
-   for (auto pub_key_weight : keys )
-   {
-      db.create<public_key_history_object>([&](public_key_history_object& obj) {
-         obj.public_key = pub_key_weight.key;
-         obj.name = name;
-         obj.permission = permission;
-      });
-   }
-}
-
 void account_history_plugin_impl::add(chainbase::database& db, const vector<permission_level_weight>& controlling_accounts, const account_name& account_name, const permission_name& permission)
 {
    for (auto controlling_account : controlling_accounts )
@@ -414,6 +402,18 @@ void account_history_plugin_impl::add(chainbase::database& db, const vector<perm
          obj.controlled_account = account_name;
          obj.controlled_permission = permission;
          obj.controlling_account = controlling_account.permission.actor;
+      });
+   }
+}
+
+void account_history_plugin_impl::add(chainbase::database& db, const vector<key_weight>& keys, const account_name& name, const permission_name& permission)
+{
+   for (auto pub_key_weight : keys )
+   {
+      db.create<public_key_history_object>([&](public_key_history_object& obj) {
+         obj.public_key = pub_key_weight.key;
+         obj.name = name;
+         obj.permission = permission;
       });
    }
 }
